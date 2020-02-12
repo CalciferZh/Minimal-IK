@@ -3,7 +3,7 @@ import pickle
 
 
 class KinematicModel():
-  def __init__(self, model_path, armature):
+  def __init__(self, model_path, armature, scale=1):
     with open(model_path, 'rb') as f:
       params = pickle.load(f)
 
@@ -23,6 +23,7 @@ class KinematicModel():
       self.parents = params['parents']
 
     self.n_shape_params = 10
+    self.scale = scale
 
     self.armature = armature
     self.n_joints = self.armature.n_joints
@@ -82,9 +83,8 @@ class KinematicModel():
       np.matmul(T, verts.reshape([-1, 4, 1])).reshape([-1, 4])[:, :3]
     self.keypoints = self.J_regressor_ext.dot(self.verts)
 
-
-    self.verts *= 1000
-    self.keypoints *= 1000
+    self.verts *= self.scale
+    self.keypoints *= self.scale
 
     return self.verts.copy(), self.keypoints.copy()
 
@@ -151,6 +151,19 @@ class KinematicModel():
 
     """
     return np.dstack((np.zeros((x.shape[0], 4, 3)), x))
+
+  def save_obj(self, path):
+    """
+    Save the SMPL model into .obj file.
+    Parameter:
+    ---------
+    path: Path to save.
+    """
+    with open(path, 'w') as fp:
+      for v in self.verts:
+        fp.write('v %f %f %f\n' % (v[0], v[1], v[2]))
+      for f in self.faces + 1:
+        fp.write('f %d %d %d\n' % (f[0], f[1], f[2]))
 
 
 class KinematicPCAWrapper():

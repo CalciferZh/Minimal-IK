@@ -1,9 +1,12 @@
 # it must be assured that parent joint appears before child joint
 
-class ManoArmature:
+class MANOArmature:
   n_joints = 16
 
-  n_keypoints = 21
+  # indices of extended joints (finger tips)
+  joints_ext = [333, 444, 672, 555, 744]
+
+  n_keypoints = n_joints + len(joints_ext)
 
   root = 0
 
@@ -19,15 +22,30 @@ class ManoArmature:
     'I3', 'M3', 'L3', 'R3', 'T3' #20, tips are manually added (not in MANO)
   ]
 
-  # indices of extended joints (finger tips)
-  joints_ext = [333, 444, 672, 555, 744]
 
-  parents = [
-    None,
-    0, 1, 2,
-    0, 4, 5,
-    0, 7, 8,
-    0, 10, 11,
-    0, 13, 14,
-    3, 6, 9, 12, 15
+class SMPLArmature:
+  n_joints = 24
+
+  # indices of extended joints (limb ends)
+  # lfinger, rfinger, ltoe, rtoe, head-top
+  joints_ext = [2446, 5907, 3216, 6618, 411]
+
+  n_keypoints = n_joints + len(joints_ext)
+
+  labels = [
+    'pelvis',
+    'llegroot', 'rlegroot',
+    'lowerback',
+    'lknee', 'rknee',
+    'upperback',
+    'lankle', 'rankle',
+    'thorax',
+    'ltoes', 'rtoes',
+    'lowerneck',
+    'lclavicle', 'rclavicle',
+    'upperneck',
+    'larmroot', 'rarmroot',
+    'lelbow', 'relbow',
+    'lwrist', 'rwrist',
+    'lhand', 'rhand'
   ]
