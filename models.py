@@ -22,7 +22,7 @@ class KinematicModel():
 
       self.parents = params['parents']
 
-    self.n_shape_params = 10
+    self.n_shape_params = self.mesh_shape_basis.shape[-1]
     self.scale = scale
 
     self.armature = armature
@@ -37,7 +37,7 @@ class KinematicModel():
     self.J_regressor_ext = \
       np.zeros([self.armature.n_keypoints, self.J_regressor.shape[1]])
     self.J_regressor_ext[:self.armature.n_joints] = self.J_regressor
-    for i, v in enumerate(self.armature.joints_ext):
+    for i, v in enumerate(self.armature.keypoints_ext):
       self.J_regressor_ext[i + self.armature.n_joints, v] = 1
 
     self.update()
@@ -170,7 +170,7 @@ class KinematicPCAWrapper():
   def __init__(self, core, n_pose=12):
     self.core = core
     self.n_pose = n_pose
-    self.n_shape = 10
+    self.n_shape = core.n_shape_params
     self.n_glb = 3
     self.n_params = self.n_pose + self.n_shape + self.n_glb
 
