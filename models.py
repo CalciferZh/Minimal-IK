@@ -3,7 +3,21 @@ import pickle
 
 
 class KinematicModel():
+  """
+  Kinematic model that takes in model parameters and outputs mesh, keypoints,
+  etc.
+  """
   def __init__(self, model_path, armature, scale=1):
+    """
+    Parameters
+    ----------
+    model_path : str
+      Path to the model to be loaded.
+    armature : object
+      An armature class from `aramatures.py`.
+    scale : int, optional
+      Scale of the model to make the solving easier, by default 1
+    """
     with open(model_path, 'rb') as f:
       params = pickle.load(f)
 
@@ -14,7 +28,7 @@ class KinematicModel():
 
       self.skinning_weights = params['skinning_weights']
 
-      self.mesh_pose_basis = params['mesh_pose_basis']
+      self.mesh_pose_basis = params['mesh_pose_basis'] # pose blend shape
       self.mesh_shape_basis = params['mesh_shape_basis']
       self.mesh_template = params['mesh_template']
 
@@ -43,6 +57,28 @@ class KinematicModel():
     self.update()
 
   def set_params(self, pose_abs=None, pose_pca=None, pose_glb=None, shape=None):
+    """
+    Set model parameters and get the mesh. Do not set `pose_abs` and `pose_pca`
+    at the same time.
+
+    Parameters
+    ----------
+    pose_abs : np.ndarray, shape [n_joints, 3], optional
+      The absolute model pose in axis-angle, by default None
+    pose_pca : np.ndarray, optional
+      The PCA coefficients of the pose, shape [n_pose, 3], by default None
+    pose_glb : np.ndarray, shape [1, 3], optional
+      Global rotation for the model, by default None
+    shape : np.ndarray, shape [n_shape], optional
+      Shape coefficients of the pose, by default None
+
+    Returns
+    -------
+    np.ndarray, shape [N, 3]
+      Vertices coordinates of the mesh, scale applied.
+    np.ndarray, shape [K, 3]
+      Keypoints coordinates of the model, scale applied.
+    """
     if pose_abs is not None:
       self.pose = pose_abs
     elif pose_pca is not None:
@@ -59,6 +95,16 @@ class KinematicModel():
     return self.update()
 
   def update(self):
+    """
+    Re-compute vertices and keypoints with given parameters.
+
+    Returns
+    -------
+    np.ndarray, shape [N, 3]
+      Vertices coordinates of the mesh, scale applied.
+    np.ndarray, shape [K, 3]
+      Keypoints coordinates of the model, scale applied.
+    """
     verts = self.mesh_template + self.mesh_shape_basis.dot(self.shape)
     self.J = self.J_regressor.dot(verts)
     self.R = self.rodrigues(self.pose.reshape((-1, 1, 3)))
@@ -167,7 +213,18 @@ class KinematicModel():
 
 
 class KinematicPCAWrapper():
+  """
+  A wrapper for `KinematicsModel` to be compatible to the solver.
+  """
   def __init__(self, core, n_pose=12):
+    """
+    Parameters
+    ----------
+    core : KinematicModel
+      Core model to be manipulated.
+    n_pose : int, optional
+      Degrees of freedom for pose, by default 12
+    """
     self.core = core
     self.n_pose = n_pose
     self.n_shape = core.n_shape_params
@@ -175,11 +232,41 @@ class KinematicPCAWrapper():
     self.n_params = self.n_pose + self.n_shape + self.n_glb
 
   def run(self, params):
+    """
+    Set the parameters, return the corresponding result.
+
+    Parameters
+    ----------
+    params : np.ndarray
+      Model parameters.
+
+    Returns
+    -------
+    np.ndarray
+      Corresponding result.
+    """
     shape, pose_pca, pose_glb = self.decode(params)
     return \
       self.core.set_params(pose_glb=pose_glb, pose_pca=pose_pca, shape=shape)[1]
 
   def decode(self, params):
+    """
+    Decode the compact model parameters into semantic parameters.
+
+    Parameters
+    ----------
+    params : np.ndarray
+      Model parameters.
+
+    Returns
+    -------
+    np.ndarray
+      Shape parameters.
+    np.ndarray
+      Pose parameters.
+    np.ndarray
+      Global rotation.
+    """
     pose_glb = params[:self.n_glb]
     pose_pca = params[self.n_glb:-self.n_shape]
     shape = params[-self.n_shape:]

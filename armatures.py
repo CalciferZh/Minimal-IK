@@ -1,16 +1,13 @@
 # it must be assured that parent joint appears before child joint
 
 class MANOArmature:
+  # number of movable joints
   n_joints = 16
 
   # indices of extended keypoints
   keypoints_ext = [333, 444, 672, 555, 744]
 
   n_keypoints = n_joints + len(keypoints_ext)
-
-  root = 0
-
-  center = 4
 
   labels = [
     'W', #0
@@ -27,37 +24,35 @@ class MANOArmature:
 class SMPLArmature:
   n_joints = 24
 
-  # indices of extended keypoints (limb ends)
-  # lfinger, rfinger, ltoe, rtoe, head-top
   keypoints_ext = [2446, 5907, 3216, 6618, 411]
 
   n_keypoints = n_joints + len(keypoints_ext)
 
   labels = [
     'pelvis',
-    'llegroot', 'rlegroot',
+    'left leg root', 'right leg root',
     'lowerback',
-    'lknee', 'rknee',
+    'left knee', 'right knee',
     'upperback',
-    'lankle', 'rankle',
+    'left ankle', 'right ankle',
     'thorax',
-    'ltoes', 'rtoes',
+    'left toes', 'right toes',
     'lowerneck',
-    'lclavicle', 'rclavicle',
+    'left clavicle', 'right clavicle',
     'upperneck',
-    'larmroot', 'rarmroot',
-    'lelbow', 'relbow',
-    'lwrist', 'rwrist',
-    'lhand', 'rhand'
+    'left armroot', 'right armroot',
+    'left elbow', 'right elbow',
+    'left wrist', 'right wrist',
+    'left hand', 'right hand'
     # extended
-    'lfinger_tip', 'rfinger_tip', 'ltoe_tip', 'r_toe_tip', 'head_top'
+    'left finger tip', 'right finger tip', 'left toe tip', 'right toe tip',
+    'head_top'
   ]
 
 
 class SMPLHArmature:
   n_joints = 52
 
-  # indices of extended keypoints (limb ends)
   keypoints_ext = [
     2746, 2320, 2446, 2557, 2674,
     6191, 5781, 5907, 6018, 6135,
@@ -68,22 +63,22 @@ class SMPLHArmature:
 
   labels = [
     'pelvis',
-    'llegroot', 'rlegroot',
+    'left leg root', 'right leg root',
     'lowerback',
-    'lknee', 'rknee',
+    'left knee', 'right knee',
     'upperback',
-    'lankle', 'rankle',
+    'left ankle', 'right ankle',
     'thorax',
-    'ltoes', 'rtoes',
+    'left toes', 'right toes',
     'lowerneck',
-    'lclavicle', 'rclavicle',
+    'left clavicle', 'right clavicle',
     'upperneck',
-    'larmroot', 'rarmroot',
-    'lelbow', 'relbow',
-    'lwrist', 'rwrist',
-    'lhand', 'rhand'
+    'left armroot', 'right armroot',
+    'left elbow', 'right elbow',
+    'left wrist', 'right wrist',
+    'left hand', 'right hand'
     # extended
-    'left-thumb', 'li', 'lm', 'lr', 'll',
-    'rt', 'ri', 'rm', 'rr', 'rl',
-    'ltoe-tip', 'rtoe-tip', 'heat-top'
+    'left thumb', 'left index', 'left middle', 'left ring', 'left little',
+    'right thumb', 'right index', 'right middle', 'right ring', 'right little',
+    'left toe tip', 'right toe tip', 'heat-top'
   ]

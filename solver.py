@@ -5,6 +5,18 @@ from vctoolkit import Timer
 
 class Solver:
   def __init__(self, eps=1e-5, max_iter=30, mse_threshold=1e-8, verbose=False):
+    """
+    Parameters
+    ----------
+    eps : float, optional
+      Epsilon for derivative computation, by default 1e-5
+    max_iter : int, optional
+      Max iterations, by default 30
+    mse_threshold : float, optional
+      Early top when mse change is smaller than this threshold, by default 1e-8
+    verbose : bool, optional
+      Print information in each iteration, by default False
+    """
     self.eps = eps
     self.max_iter = max_iter
     self.mse_threshold = mse_threshold
@@ -12,6 +24,23 @@ class Solver:
     self.timer = Timer()
 
   def get_derivative(self, model, params, n):
+    """
+    Compute the derivative by adding and subtracting epsilon
+
+    Parameters
+    ----------
+    model : object
+      Model wrapper to be manipulated.
+    params : np.ndarray
+      Current model parameters.
+    n : int
+      The index of parameter.
+
+    Returns
+    -------
+    np.ndarray
+      Derivative with respect to the n-th parameter.
+    """
     params1 = np.array(params)
     params2 = np.array(params)
 
@@ -26,6 +55,27 @@ class Solver:
     return d.ravel()
 
   def solve(self, model, target, init=None, u=1e-3, v=1.5):
+    """
+    Solver for the target.
+
+    Parameters
+    ----------
+    model : object
+      Wrapper to be manipulated.
+    target : np.ndarray
+      Optimization target.
+    init : np,ndarray, optional
+      Initial parameters, by default None
+    u : float, optional
+      LM algorithm parameter, by default 1e-3
+    v : float, optional
+      LM algorithm parameter, by default 1.5
+
+    Returns
+    -------
+    np.ndarray
+      Solved model parameters.
+    """
     if init is None:
       init = np.zeros(model.n_params)
     out_n = np.shape(model.run(init).ravel())[0]

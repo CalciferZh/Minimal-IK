@@ -4,6 +4,9 @@ import numpy as np
 
 
 def prepare_mano_model():
+  """
+  Convert the official MANO model into compatible format with this project.
+  """
   with open(OFFICIAL_MANO_PATH, 'rb') as f:
     data = pickle.load(f, encoding='latin1')
   params = {
@@ -24,6 +27,9 @@ def prepare_mano_model():
 
 
 def prepare_smpl_model():
+  """
+  Convert the official SMPL model into compatible format with this project.
+  """
   with open(OFFICIAL_SMPL_PATH, 'rb') as f:
     data = pickle.load(f, encoding='latin1')
   params = {
@@ -45,6 +51,9 @@ def prepare_smpl_model():
 
 
 def prepare_smplh_model():
+  """
+  Convert the official SMPLH model into compatible format with this project.
+  """
   data = np.load(OFFICIAL_SMPLH_PATH)
   params = {
     # SMPL does not provide pose PCA
