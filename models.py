@@ -14,7 +14,7 @@ class KinematicModel():
     model_path : str
       Path to the model to be loaded.
     armature : object
-      An armature class from `aramatures.py`.
+      An armature class from `armatures.py`.
     scale : int, optional
       Scale of the model to make the solving easier, by default 1
     """
