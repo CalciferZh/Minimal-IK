@@ -53,12 +53,15 @@ This is because this optimization based approach cannot handle large global rota
 
 Every required package is available via `pip install`.
 
-### Limitations
+### Notes
 
 Again, we note that this approach cannot handle large global rotations (R0) due to the high non-convexity.
 For example, when the subject keeps the T pose but faces backwards.
 
 In such cases, a good initialization, at least for R0, is necessary.
+
+We also note that this approach is sensitive the the scale (i.e. length unit), as it would affect the MSE and the update step.
+Please consider using the default scale if you do not have special reasons.
 
 ## Credits
 
