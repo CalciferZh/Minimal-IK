@@ -27,13 +27,11 @@ We test this approach on the [AMASS dataset](https://amass.is.tue.mpg.de/).
 
 |             | Mean Joint Error (mm) | Mean Vertex Error (mm) |
 | ----------  | --------------------- | ---------------------- |
-| SMPL (body) | 8.717                 | 14.136                 |
+| SMPL (body) | 14.406                | 23.110                 |
+| MANO (hand) | 2.15                  | 3.42                   |
 
-
-In the test on AMASS, we assume that the global rotation is known.
-This is because this optimization based approach cannot handle large global rotations.
-
-(We'll update the hand results soon.)
+We assume that the global rotation is known.
+We discuss this further in the `Notes` section.
 
 ## Usage
 
