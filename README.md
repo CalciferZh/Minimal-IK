@@ -6,6 +6,8 @@ Briefly, given joint coordinates (and optional other keypoints), the solver give
 
 Levenberg–Marquardt algorithm is used, the energy is simply the L2 distance between the keypoints.
 
+As no prior nor regularization terms are used, it is not surprising that the code does not work well on "real" data. My intention to release the code was to give some hints on how to develope a customized IK solver. I would recommend to add more complicating terms for better performance.
+
 ## Results
 
 ### Qualitative
