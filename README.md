@@ -14,7 +14,7 @@ As no prior nor regularization terms are used, it is not surprising that the cod
 
 This is the example result on the SMPL body model.
 The left is the ground truth, and the right one is the estimation.
-You can notice the minor difference between the right hands.
+You can notice the minor difference between the left hands.
 
 ![](body.png)
 
@@ -53,7 +53,7 @@ We discuss this further in the `Notes` section.
 
 Every required package is available via `pip install`.
 
-### Notes
+### Customization Notes
 
 Again, we note that this approach cannot handle large global rotations (R0) due to the high non-convexity.
 For example, when the subject keeps the T pose but faces backwards.
