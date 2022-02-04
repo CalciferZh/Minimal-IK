@@ -33,7 +33,7 @@ We test this approach on the [AMASS dataset](https://amass.is.tue.mpg.de/).
 | MANO (hand) | 2.15                  | 3.42                   |
 
 We assume that the global rotation is known.
-We discuss this further in the `Notes` section.
+We discuss this further in the `Customization Notes` section.
 
 ## Usage
 
